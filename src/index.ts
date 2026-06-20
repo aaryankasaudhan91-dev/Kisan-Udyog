@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
+import { taskQueue, WebhookPayload } from './queue';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -18,7 +19,11 @@ app.post('/webhook/twilio', (req: Request, res: Response) => {
     res.set('Content-Type', 'text/xml');
     res.status(200).send('<Response></Response>');
 
-    // TODO: Hand off payload to the background job queue (INTF-02)
+    // Hand off payload to the background job queue (INTF-02)
+    const payload = req.body as WebhookPayload;
+    taskQueue.push(payload).catch((err: Error) => {
+        console.error('Queue processing error:', err);
+    });
 });
 
 if (require.main === module) {
