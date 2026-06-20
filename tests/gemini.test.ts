@@ -3,7 +3,7 @@ import { VisionAgent } from '../src/gemini';
 
 vi.mock('@langchain/google-genai', () => {
     return {
-        ChatGoogleGenAI: class {
+        ChatGoogleGenerativeAI: class {
             async invoke() {
                 // Ensure the mock returns exactly what the parser expects (a JSON string)
                 return {

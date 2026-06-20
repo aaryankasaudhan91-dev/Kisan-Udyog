@@ -26,7 +26,7 @@ describe('Audio Transcoding - Task 1-02-01', () => {
                 if (event === 'end') {
                     setTimeout(callback, 10); // Simulate async processing
                 }
-                return this;
+                return mockFfmpeg;
             }),
             save: vi.fn().mockReturnThis()
         };

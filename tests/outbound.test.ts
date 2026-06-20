@@ -24,7 +24,9 @@ describe('Twilio Outbound Alerts - Task 1-05-03', () => {
         
         expect(sid).toBe('SM123456789');
         // twilio is mocked so we verify the constructor and message create behavior
-        const mockTwilioInstance = (twilio as unknown as ReturnType<typeof vi.fn>).mock.results[0].value;
+        const results = (twilio as unknown as ReturnType<typeof vi.fn>).mock.results;
+        if (!results[0]) throw new Error("Twilio constructor was not called");
+        const mockTwilioInstance = results[0].value;
         expect(mockTwilioInstance.messages.create).toHaveBeenCalledWith({
             body: 'Krishi Udyog: Critical Weather & Pest Alert',
             from: 'whatsapp:+14155238886',

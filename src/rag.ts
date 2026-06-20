@@ -20,15 +20,21 @@ export class IcarRagPipeline {
 
         const vectors = await this.embeddings.embedDocuments(texts);
         
-        this.store = texts.map((text, i) => ({ text, vector: vectors[i] }));
+        this.store = texts.map((text, i) => {
+            const vector = vectors[i];
+            if (!vector) throw new Error("Embedding failed");
+            return { text, vector };
+        });
     }
 
     private cosineSimilarity(v1: number[], v2: number[]) {
         let dot = 0, norm1 = 0, norm2 = 0;
         for (let i = 0; i < v1.length; i++) {
-            dot += v1[i] * v2[i];
-            norm1 += v1[i] * v1[i];
-            norm2 += v2[i] * v2[i];
+            const val1 = v1[i] ?? 0;
+            const val2 = v2[i] ?? 0;
+            dot += val1 * val2;
+            norm1 += val1 * val1;
+            norm2 += val2 * val2;
         }
         return dot / (Math.sqrt(norm1) * Math.sqrt(norm2));
     }

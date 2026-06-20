@@ -1,4 +1,4 @@
-import { ChatGoogleGenAI } from '@langchain/google-genai';
+import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { z } from 'zod';
 import { StructuredOutputParser } from '@langchain/core/output_parsers';
@@ -15,11 +15,11 @@ export const diagnosisSchema = z.object({
 const parser = StructuredOutputParser.fromZodSchema(diagnosisSchema);
 
 export class VisionAgent {
-    private model: ChatGoogleGenAI;
+    private model: ChatGoogleGenerativeAI;
 
     constructor() {
-        this.model = new ChatGoogleGenAI({
-            modelName: "gemini-1.5-flash",
+        this.model = new ChatGoogleGenerativeAI({
+            model: "gemini-1.5-flash",
             maxOutputTokens: 1024,
             temperature: 0.1,
             apiKey: process.env.GEMINI_API_KEY || 'mock-key',

@@ -36,7 +36,9 @@ describe('Cron Infrastructure - Task 1-05-01', () => {
     it('should process farmers and send alert if rain pop is high', async () => {
         startRiskPolling();
         // Extract the scheduled callback function and run it manually
-        const scheduledCallback = vi.mocked(cron.schedule).mock.calls[0][1] as Function;
+        const calls = vi.mocked(cron.schedule).mock.calls;
+        if (!calls[0]) throw new Error("No cron schedule calls found");
+        const scheduledCallback = calls[0][1] as Function;
         
         await scheduledCallback();
         
