@@ -7,7 +7,7 @@ export const db = new sqlite3.Database(path.join(process.cwd(), 'database.sqlite
 export const initSchema = (): Promise<void> => {
     return new Promise((resolve, reject) => {
         db.serialize(() => {
-            db.run(\`
+            db.run(`
                 CREATE TABLE IF NOT EXISTS farmers (
                     phone_number TEXT PRIMARY KEY,
                     pin_code TEXT NOT NULL,
@@ -15,7 +15,7 @@ export const initSchema = (): Promise<void> => {
                     lon REAL,
                     language TEXT DEFAULT 'hi'
                 )
-            \`, (err) => {
+            `, (err) => {
                 if (err) reject(err);
                 else resolve();
             });
@@ -25,7 +25,7 @@ export const initSchema = (): Promise<void> => {
 
 export const getFarmers = (): Promise<any[]> => {
     return new Promise((resolve, reject) => {
-        db.all(\`SELECT * FROM farmers\`, (err, rows) => {
+        db.all(`SELECT * FROM farmers`, (err, rows) => {
             if (err) reject(err);
             else resolve(rows);
         });

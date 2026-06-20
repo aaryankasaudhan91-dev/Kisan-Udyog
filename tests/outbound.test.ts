@@ -3,13 +3,12 @@ import { OutboundClient } from '../src/outbound';
 import twilio from 'twilio';
 
 vi.mock('twilio', () => {
-    return {
-        default: vi.fn().mockReturnValue({
-            messages: {
-                create: vi.fn().mockResolvedValue({ sid: 'SM123456789' })
-            }
-        })
-    };
+    const mockTwilio = vi.fn(() => ({
+        messages: {
+            create: vi.fn().mockResolvedValue({ sid: 'SM123456789' })
+        }
+    }));
+    return { default: mockTwilio };
 });
 
 describe('Twilio Outbound Alerts - Task 1-05-03', () => {
